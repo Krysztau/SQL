@@ -1,0 +1,32 @@
+-- this works for MS SQL Server
+
+-- in a sample table we have an id (id) and a number, how many times we need it repeated (numrep)
+-- recursive table is adding one with each iteration, plus there is condition, not to add one above numrep.
+-- numrep can be different for each id
+
+WITH tbl1 
+(id, numrep)
+AS
+(
+SELECT 'a', 4
+UNION ALL
+SELECT 'b',6
+)
+,
+
+recurs
+(id, item_no, numrep)
+AS
+(
+SELECT id, 1, numrep
+
+FROM tbl1
+
+UNION ALL
+SELECT id, item_no+1, numrep
+FROM recurs
+WHERE item_no+1 <=numrep
+)
+SELECT id, item_no, numrep FROM recurs
+
+ORDER BY 1,2
